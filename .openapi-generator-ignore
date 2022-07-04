@@ -1,0 +1,5 @@
+.gitignore
+.npmignore
+.openapi-generator-ignore
+
+base.ts

@@ -1,0 +1,11 @@
+# General
+gitUserId: iskorotkov
+gitRepoId: user-admin-panel-frontend
+enablePostProcessFile: true
+
+# Generator-specific
+stringEnums: true
+supportES6: true
+withSeparateModelsAndApi: true
+apiPackage: src/api
+modelPackage: src/models
