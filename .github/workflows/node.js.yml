@@ -40,8 +40,10 @@ jobs:
     - name: Test
       run: pnpm test
       
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v3.0.0
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3.1.0
       with:
         name: dist
         path: dist
+        if-no-files-found: error
+        retention-days: 30
