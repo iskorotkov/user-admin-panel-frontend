@@ -1,0 +1,55 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2.2.2
+      with:
+        version: latest
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        
+    - name: Install packages
+      run: pnpm install
+        
+    - name: Lint
+      run: pnpm run lint
+    
+    - name: Build
+      run: pnpm run build
+    
+    - name: Test
+      run: pnpm test
+      
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: dist
+        path: dist
+        if-no-files-found: error
+        retention-days: 30
+
+      # We can also push images to image registry in production projects, but I don't want to pollute it with my test assignments.
+    - name: Build image
+      uses: docker/build-push-action@v3.0.0
+      with:
+        tags: iskorotkov/user-admin-panel-frontend:latest
